@@ -1,0 +1,22 @@
+CREATE TABLE StockData (
+    id INT IDENTITY(1,1) PRIMARY KEY, 
+    DATE DATE,               
+    Item VARCHAR(255),           
+    T1_1 INT,                         
+    T1_2 INT,
+    T1_3 INT,
+    T2_1 INT,
+    T2_2 INT,
+    T2_3 INT,
+    T3_1 INT,
+    T3_2 INT,
+    T3_3 INT,
+    T4_1 INT,
+    T4_2 INT,
+    T4_3 INT,
+    Type VARCHAR(255),               
+    Delta FLOAT,                   
+    Time VARCHAR(255),                       
+    ValVN30 FLOAT,                     
+    VolMax5m FLOAT                    
+);
