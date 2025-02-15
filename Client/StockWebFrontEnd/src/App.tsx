@@ -1,11 +1,13 @@
-import { Col, Row, Statistic, Table, Tooltip } from 'antd';
+import { Col, FloatButton, Row, Statistic, Table, Tooltip } from 'antd';
 import type { TableProps } from 'antd';
 import { tableDataType } from './types/tableDataType';
 import { tableColumns } from './constants/tableColumns';
+import { PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { chartDefaultData, chartDataItem, chartTempDataItem } from './constants/chartColumns';
-import { Bar, BarChart, CartesianGrid, LabelList, Legend, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import './static/HomePage.scss'
+import { useNavigate } from 'react-router-dom';
 
 const App = () => {
   const [tableData, setTableData] = useState<tableDataType[]>([]);
@@ -13,6 +15,9 @@ const App = () => {
   const [chartTimeData, setChartTimeData] = useState<chartDataItem[] | tableDataType[]>([])
   const [avgValVN30, setAvgValVN30] = useState<number>(0)
   const [avgVolMax5m, setAvgVolMax5m] = useState<number>(0)
+  const navigate = useNavigate();
+
+
 
   const loadData = async (path: string): Promise<any> => {
     try {
@@ -111,7 +116,6 @@ const App = () => {
       listData.forEach((item: any) => {
         item['key'] = `data_row_${item.id}`;
 
-        // This is the code to filter the Type value set
         const typeValue = {
           text: item['Type'],
           value: item['Type']
@@ -123,7 +127,6 @@ const App = () => {
           typeList.push(typeValue)
         }
 
-        // This is the code to get the Time value set
         const timeValue = {
           text: item['Time'],
           value: item['Time']
@@ -175,7 +178,7 @@ const App = () => {
   return (
     <div className='page'>
       <div className='pageCard' >
-        <Row gutter={16} justify="center" align="middle">
+        <Row gutter={16} justify="center" align="middle" style={{ margin: 0, width: "100%" }}>
           <Col xs={24} sm={12} md={8} lg={6} xl={6}>
             <Statistic title="Average Value VN30"
               value={avgValVN30}
@@ -193,48 +196,58 @@ const App = () => {
         </Row>
       </div>
       <div className='chartSpace' >
-        <div className='chartDisplayT' style={{ width: "100%", overflow: "visible" }}>
-          <BarChart width={730} height={250} data={chartTData} >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="key" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Legend
-              verticalAlign="top"
-              align="center"
-              iconType='square'
-              wrapperStyle={{ marginBottom: 10, marginTop: -20 }}
-            />
-            <Bar dataKey="129" fill="#FFDD00" >
-              <LabelList dataKey="129" position="top" />
-            </Bar>
-            <Bar dataKey="192" fill="#0EFF00" >
-              <LabelList dataKey="192" position="top" />
-            </Bar>
-            <Bar dataKey="912" fill="#0073e6" >
-              <LabelList dataKey="912" position="top" />
-            </Bar>
-            <Bar dataKey="921" fill="#FF00FF" >
-              <LabelList dataKey="921" position="top" />
-            </Bar>
-            <Bar dataKey="291" fill="#FF0000" >
-              <LabelList dataKey="291" position="top" />
-            </Bar>
-            <Bar dataKey="219" fill="#FF5B00" >
-              <LabelList dataKey="219" position="top" />
-            </Bar>
-          </BarChart>
+        <div className='chartDisplayT' >
+          <ResponsiveContainer
+            width='100%'
+            height='100%'
+          >
+            <BarChart data={chartTData} className='tBarChart' >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="key" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend
+                verticalAlign="top"
+                align="center"
+                iconType='square'
+                wrapperStyle={{ marginBottom: 10, marginTop: -20 }}
+              />
+              <Bar dataKey="129" fill="#FFDD00" >
+                <LabelList dataKey="129" position="top" />
+              </Bar>
+              <Bar dataKey="192" fill="#0EFF00" >
+                <LabelList dataKey="192" position="top" />
+              </Bar>
+              <Bar dataKey="912" fill="#0073e6" >
+                <LabelList dataKey="912" position="top" />
+              </Bar>
+              <Bar dataKey="921" fill="#FF00FF" >
+                <LabelList dataKey="921" position="top" />
+              </Bar>
+              <Bar dataKey="291" fill="#FF0000" >
+                <LabelList dataKey="291" position="top" />
+              </Bar>
+              <Bar dataKey="219" fill="#FF5B00" >
+                <LabelList dataKey="219" position="top" />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+
         </div>
         <div className='chartDisplayTime' style={{ width: "100%", overflowX: 'auto', overflowY: 'hidden', paddingTop: "30px" }}>
-          <BarChart width={chartTimeWidth} height={250} data={chartTimeData} >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="key" />
-            <YAxis allowDecimals={false} domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]} />
-            <Tooltip />
-            <Bar dataKey="value" fill='#4F78A6' >
-              <LabelList dataKey="value" position="top" />
-            </Bar>
-          </BarChart>
+          <ResponsiveContainer
+            width={chartTimeWidth} height='100%'
+          >
+            <BarChart data={chartTimeData} >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="key" />
+              <YAxis allowDecimals={false} domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]} />
+              <Tooltip />
+              <Bar dataKey="value" fill='#4F78A6' >
+                <LabelList dataKey="value" position="top" />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
       <div className='tableSpace'>
@@ -249,10 +262,20 @@ const App = () => {
               pageSizeOptions: ["5", "10", "20", "50"],
               position: ["bottomCenter"],
             }}
+            scroll={{ x: "max-content" }}
+            bordered
           />
+
         </div>
       </div>
-    </div>
+      <FloatButton
+        icon={<PlusOutlined />}
+        tooltip={<div>Insert Data</div>}
+        onClick={() => navigate('/insert')}
+        className='insertButton'
+        type='primary'
+      />
+    </div >
   )
 }
 

@@ -49,4 +49,34 @@ html {
             font-weight: bold;
         }
     }
+
+    @media (max-width: 1024px) {
+
+        background-color: white;
+
+        .submitFormSpace {
+            box-shadow: none;
+            max-width: 750px;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        background-color: white;
+
+        .submitFormSpace {
+            box-shadow: none;
+            max-width: 600px;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        background-color: white;
+
+        .submitFormSpace {
+            box-shadow: none;
+            max-width: 300px;
+        }
+    }
 }
