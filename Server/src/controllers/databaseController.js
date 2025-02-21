@@ -1,11 +1,12 @@
 const { sql, poolPromise } = require('../config/db');
+const moment = require("moment");
 
 const addDataBase = async (req, res) => {
 
     try {
         const pool = await poolPromise;
         const result = await pool.request()
-            .input('DATE', sql.Date, req.body.Date)
+            .input('DATE', sql.Date, moment.utc(req.body.DATE).local().format("YYYY-MM-DD"))
             .input('Item', sql.VarChar(255), req.body.Item)
             .input('T1_1', sql.Int, req.body.T1_1)
             .input('T1_2', sql.Int, req.body.T1_2)
