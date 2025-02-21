@@ -10,12 +10,13 @@ const InsertDataPage = () => {
 
     const [form] = Form.useForm();
 
-    const isFormComplete = form.isFieldsTouched() && form.getFieldsValue();
+    const formValues = Form.useWatch([], form);
+
+    const isFormComplete = Object.values(formValues || {}).every(value => value !== undefined && value !== null && value !== "");
 
     const onFinish = async (values: any) => {
-        console.log("Form Data:", values); // Check the received values
+        console.log("Form Data:", values);
 
-        // Format the data if needed
         const formattedData = {
             ...values,
             DATE: values.Date?.format("YYYY-MM-DD"),
