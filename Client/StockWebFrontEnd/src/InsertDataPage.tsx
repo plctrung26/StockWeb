@@ -15,13 +15,14 @@ const InsertDataPage = () => {
     const isFormComplete = Object.values(formValues || {}).every(value => value !== undefined && value !== null && value !== "");
 
     const onFinish = async (values: any) => {
-        console.log("Form Data:", values);
 
         const formattedData = {
             ...values,
             DATE: values.Date?.format("YYYY-MM-DD"),
             Time: values.Time?.format("h:mm:ss A")
         };
+
+        console.log("Selected Date:", values.Date?.toISOString());
 
         try {
             const response = await fetch("http://localhost:8080/api/send-data", { // Change URL to your backend
@@ -98,6 +99,7 @@ const InsertDataPage = () => {
                     </Form.Item>
                     <Form.Item label="Type" name="Type" rules={[{ required: true, message: "Please select a date!" }]}>
                         <Select>
+                            <Select.Option value="LT0">LT0</Select.Option>
                             <Select.Option value="GT0">GT0</Select.Option>
                             <Select.Option value="GT5">GT5</Select.Option>
                             <Select.Option value="LT5">LT5</Select.Option>
